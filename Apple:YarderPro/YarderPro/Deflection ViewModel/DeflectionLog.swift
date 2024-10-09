@@ -20,6 +20,9 @@ class DeflectionLog: ObservableObject, Identifiable{
     @Published var westCoord: Double? = nil
     
     //All the variables used in the deflection calculator tab
+    @Published var midSpanAngle: Double? = nil
+    @Published var fullSpanAngle: Double? = nil
+    
     
     //All variables for the tension tab
     
