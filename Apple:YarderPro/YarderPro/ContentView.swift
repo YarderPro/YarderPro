@@ -28,13 +28,13 @@ struct ContentView: View {
 
 struct DeflectionView: View{
     var body: some View{
-        Text("Drew")
+        Text("Try Again")
     }
 }
 
 struct TensionView: View{
     var body: some View{
-        Text("Drew")
+        Text("Math")
     }
 }
 
@@ -49,7 +49,7 @@ func TabContent(selectedTab: String, deflectionLog: DeflectionLog) -> some View 
     switch selectedTab {
     case "Details":
         DeflectionDetails(deflectionLog: deflectionLog) // Replace with your actual view
-    case "Deflection":
+    case "Deflections":
         DeflectionView() // Replace with your actual view
     case "Tension":
         TensionView() // Replace with your actual view
