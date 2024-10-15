@@ -46,9 +46,7 @@ export default function TabLayout() {
         name="template"
         options={{
           title: 'Template',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
+          href:null,
         }}
       />
     </Tabs>
