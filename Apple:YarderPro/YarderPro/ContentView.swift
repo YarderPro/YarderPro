@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = "Details"
+    @State private var selectedTab = "Deflections"
     @ObservedObject var deflectionLog: DeflectionLog
     
     var body: some View {
@@ -27,14 +27,73 @@ struct ContentView: View {
 }
 
 struct DeflectionView: View{
+    @ObservedObject var deflectionLog: DeflectionLog
     var body: some View{
-        Text("Drew")
+        Form{
+            HStack{
+                Spacer()
+                Text("Angle to Ground")
+                    .font(.custom("Helvetica Neue", size: 19))
+                Spacer()
+                TextField("Enter the angle to ground", value: $deflectionLog.spanGround, formatter: NumberFormatter())
+                    .border(.secondary)
+                    .border(Color.gray)
+                    .cornerRadius(3)
+                    .padding([.leading, .trailing], 2)
+                    .frame(minWidth:0, maxWidth:.infinity)
+                    .font(.custom("Helvetica Neue", size: 19))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+            
+            HStack{
+                Text("Angle to Mid Span")
+                    .font(.custom("Helvetica Neue", size: 19))
+                
+                TextField("Enter the angle to mid span", value: $deflectionLog.spanMidSpan, formatter: NumberFormatter())
+                    .border(.secondary)
+                    .border(Color.gray)
+                    .cornerRadius(3)
+                    .padding([.leading, .trailing], 2)
+                    .frame(minWidth:0, maxWidth:.infinity)
+                    .font(.custom("Helvetica Neue", size: 19))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+            
+            HStack{
+                Text("Height of Tower")
+                    .font(.custom("Helvetica Neue", size: 19))
+                
+                TextField("Enter the towerHeight", value: $deflectionLog.TowerHeight, formatter: NumberFormatter())
+                    .border(.secondary)
+                    .border(Color.gray)
+                    .cornerRadius(3)
+                    .padding([.leading, .trailing], 2)
+                    .frame(minWidth:0, maxWidth:.infinity)
+                    .font(.custom("Helvetica Neue", size: 19))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+            
+            HStack{
+                Text("Length of Cable")
+                    .font(.custom("Helvetica Neue", size: 19))
+                
+                TextField("Enter the length of the cable", value: $deflectionLog.Length, formatter: NumberFormatter())
+                    .border(.secondary)
+                    .border(Color.gray)
+                    .cornerRadius(3)
+                    .padding([.leading, .trailing], 2)
+                    .frame(minWidth:0, maxWidth:.infinity)
+                    .font(.custom("Helvetica Neue", size: 19))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+        }
+        .pickerStyle(.inline)
     }
 }
 
 struct TensionView: View{
     var body: some View{
-        Text("Drew")
+        Text("Math")
     }
 }
 
@@ -49,8 +108,8 @@ func TabContent(selectedTab: String, deflectionLog: DeflectionLog) -> some View 
     switch selectedTab {
     case "Details":
         DeflectionDetails(deflectionLog: deflectionLog) // Replace with your actual view
-    case "Deflection":
-        DeflectionView() // Replace with your actual view
+    case "Deflections":
+        DeflectionView(deflectionLog: deflectionLog) // Replace with your actual view
     case "Tension":
         TensionView() // Replace with your actual view
     case "Diagram":
