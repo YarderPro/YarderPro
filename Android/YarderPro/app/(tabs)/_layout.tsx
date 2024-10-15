@@ -16,6 +16,15 @@ export default function TabLayout() {
         headerShown: false,
       }}>
       <Tabs.Screen
+        name="deflectionCalc"
+        options={{
+          title: 'Deflection',
+          tabBarIcon: ({}) => (
+            <Entypo name="calculator" size={26} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
@@ -30,15 +39,6 @@ export default function TabLayout() {
           title: 'Explore',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="deflectionCalc"
-        options={{
-          title: 'Deflection',
-          tabBarIcon: ({ color, focused }) => (
-            <Entypo name="calculator" size={26} color="black" />
           ),
         }}
       />
