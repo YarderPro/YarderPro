@@ -26,100 +26,119 @@ struct ContentView: View {
     }
 }
 
+
 struct DeflectionView: View{
     @ObservedObject var deflectionLog: DeflectionLog
     var body: some View{
         Form{
-            HStack{
-                Spacer()
-                Text("Angle to Ground")
-                    .font(.custom("Helvetica Neue", size: 19))
-                Spacer()
-                TextField("Enter the angle to ground", value: $deflectionLog.spanGround, formatter: NumberFormatter())
-                    .border(.secondary)
-                    .border(Color.gray)
-                    .cornerRadius(3)
-                    .padding([.leading, .trailing], 2)
-                    .frame(minWidth:0, maxWidth:.infinity)
-                    .font(.custom("Helvetica Neue", size: 19))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-            }
-            
-            HStack{
-                Text("Angle to Mid Span")
-                    .font(.custom("Helvetica Neue", size: 19))
+            Section{
+                HStack{
+                    Spacer()
+                    Text("Angle to Ground")
+                        .font(.custom("Helvetica Neue", size: 19))
+                    Spacer()
+                    TextField("Enter the angle to ground", value: $deflectionLog.spanGround, formatter: NumberFormatter())
+                        .border(.secondary)
+                        .border(Color.gray)
+                        .cornerRadius(3)
+                        .padding([.leading, .trailing], 2)
+                        .frame(minWidth:0, maxWidth:.infinity)
+                        .font(.custom("Helvetica Neue", size: 19))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onChange(of: deflectionLog.spanGround) {
+                            deflectionLog.calculatePercentDeflection()
+                        }
+                }
                 
-                TextField("Enter the angle to mid span", value: $deflectionLog.spanMidSpan, formatter: NumberFormatter())
-                    .border(.secondary)
-                    .border(Color.gray)
-                    .cornerRadius(3)
-                    .padding([.leading, .trailing], 2)
-                    .frame(minWidth:0, maxWidth:.infinity)
-                    .font(.custom("Helvetica Neue", size: 19))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-            }
-            
-            HStack{
-                Text("Height of Tower")
-                    .font(.custom("Helvetica Neue", size: 19))
+                HStack{
+                    Text("Angle to Mid Span")
+                        .font(.custom("Helvetica Neue", size: 19))
+                    
+                    TextField("Enter the angle to mid span", value: $deflectionLog.spanMidSpan, formatter: NumberFormatter())
+                        .border(.secondary)
+                        .border(Color.gray)
+                        .cornerRadius(3)
+                        .padding([.leading, .trailing], 2)
+                        .frame(minWidth:0, maxWidth:.infinity)
+                        .font(.custom("Helvetica Neue", size: 19))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onChange(of: deflectionLog.spanMidSpan) {
+                            deflectionLog.calculatePercentDeflection()
+                        }
+                }
                 
-                TextField("Enter the towerHeight", value: $deflectionLog.TowerHeight, formatter: NumberFormatter())
-                    .border(.secondary)
-                    .border(Color.gray)
-                    .cornerRadius(3)
-                    .padding([.leading, .trailing], 2)
-                    .frame(minWidth:0, maxWidth:.infinity)
-                    .font(.custom("Helvetica Neue", size: 19))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-            }
-            
-            HStack{
-                Text("Length of Cable")
-                    .font(.custom("Helvetica Neue", size: 19))
+                HStack{
+                    Text("Height of Tower")
+                        .font(.custom("Helvetica Neue", size: 19))
+                    
+                    TextField("Enter the towerHeight", value: $deflectionLog.TowerHeight, formatter: NumberFormatter())
+                        .border(.secondary)
+                        .border(Color.gray)
+                        .cornerRadius(3)
+                        .padding([.leading, .trailing], 2)
+                        .frame(minWidth:0, maxWidth:.infinity)
+                        .font(.custom("Helvetica Neue", size: 19))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onChange(of: deflectionLog.TowerHeight) {
+                            deflectionLog.calculatePercentDeflection()
+                        }
+                }
                 
-                TextField("Enter the length of the cable", value: $deflectionLog.Length, formatter: NumberFormatter())
-                    .border(.secondary)
-                    .border(Color.gray)
-                    .cornerRadius(3)
-                    .padding([.leading, .trailing], 2)
-                    .frame(minWidth:0, maxWidth:.infinity)
-                    .font(.custom("Helvetica Neue", size: 19))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                HStack{
+                    Text("Length of Cable")
+                        .font(.custom("Helvetica Neue", size: 19))
+                    
+                    TextField("Enter the length of the cable", value: $deflectionLog.Length, formatter: NumberFormatter())
+                        .border(.secondary)
+                        .border(Color.gray)
+                        .cornerRadius(3)
+                        .padding([.leading, .trailing], 2)
+                        .frame(minWidth:0, maxWidth:.infinity)
+                        .font(.custom("Helvetica Neue", size: 19))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onChange(of: deflectionLog.Length) {
+                            deflectionLog.calculatePercentDeflection()
+                        }
+                }
             }
+            Section{
+                HStack {
+                        Text("Deflection")
+                            .font(.custom("Helvetica Neue", size: 19))
+                        Spacer()
+                        if deflectionLog.isDataValid {
+                            if let deflection = deflectionLog.percentDeflection {
+                                Text("\(deflection)")  // Safe unwrapping
+                                    .font(.custom("Helvetica Neue", size: 19))
+                            } else {
+                                Text("No deflection calculated")
+                                    .foregroundColor(.red)
+                                    .font(.custom("Helvetica Neue", size: 19))
+                            }
+                        } else {
+                            Text("Not enough data entered")
+                                .foregroundColor(.red)
+                                .font(.custom("Helvetica Neue", size: 19))
+                        }
+                    }
+            }
+            .pickerStyle(.inline)
         }
-        .pickerStyle(.wheel)
     }
 }
-
+    
 struct TensionView: View{
     var body: some View{
         Text("Math")
     }
 }
-
+    
 struct DiagramView: View{
     var body: some View{
         Text("Drew")
     }
 }
-
-@ViewBuilder
-func TabContent(selectedTab: String, deflectionLog: DeflectionLog) -> some View {
-    switch selectedTab {
-    case "Details":
-        DeflectionDetails(deflectionLog: deflectionLog) // Replace with your actual view
-    case "Deflections":
-        DeflectionView(deflectionLog: deflectionLog) // Replace with your actual view
-    case "Tension":
-        TensionView() // Replace with your actual view
-    case "Diagram":
-        DiagramView() // Replace with your actual view
-    default:
-        Text("Select a tab")
-    }
-    Spacer()
-}
-
+    
 struct DeflectionDetails: View{
     @ObservedObject var deflectionLog: DeflectionLog
     
@@ -288,6 +307,23 @@ struct DeflectionDetails: View{
         }
     }
     
+}
+    
+@ViewBuilder
+func TabContent(selectedTab: String, deflectionLog: DeflectionLog) -> some View {
+    switch selectedTab {
+    case "Details":
+        DeflectionDetails(deflectionLog: deflectionLog)
+    case "Deflections":
+        DeflectionView(deflectionLog: deflectionLog)
+    case "Tension":
+        TensionView() // Replace with your actual view
+    case "Diagram":
+        DiagramView() // Replace with your actual view
+    default:
+        Text("Select a tab")
+    }
+    Spacer()
 }
 
 struct DeflectionDetails_Preview: PreviewProvider{
