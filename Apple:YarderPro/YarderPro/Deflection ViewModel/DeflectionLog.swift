@@ -20,8 +20,13 @@ class DeflectionLog: ObservableObject, Identifiable{
     @Published var westCoord: Double? = nil
     
     //All the variables used in the deflection calculator tab
-    @Published var midSpanAngle: Double? = nil
-    @Published var fullSpanAngle: Double? = nil
+    //% Deflection = (Sground– Smidspan) / 2.2 + (TowerH / Length) / 2.2 x 100%
+    @Published var spanGround: Double? = nil
+    @Published var spanMidSpan: Double? = nil
+    @Published var percentDeflection: Double? = nil
+    @Published var TowerHeight: Double? = nil
+    @Published var Length: Double? = nil
+    
     
     
     //All variables for the tension tab
