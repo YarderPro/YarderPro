@@ -23,10 +23,22 @@ class DeflectionLog: ObservableObject, Identifiable{
     //% Deflection = (Sground– Smidspan) / 2.2 + (TowerH / Length) / 2.2 x 100%
     @Published var spanGround: Double? = nil
     @Published var spanMidSpan: Double? = nil
-    @Published var percentDeflection: Double? = nil
+    @Published var percentDeflection: Double? = 0
     @Published var TowerHeight: Double? = nil
     @Published var Length: Double? = nil
     
+    var isDataValid: Bool {
+        return spanGround != nil && spanMidSpan != nil && TowerHeight != nil && Length != nil
+    }
+    
+    func calculatePercentDeflection(){
+        let spanGround = self.spanGround ?? 0
+        let spanMidSpan = self.spanMidSpan ?? 0
+        let TowerHeight = self.TowerHeight ?? 0
+        let Length = self.Length ?? 0
+        
+        percentDeflection = (spanGround - spanMidSpan) / 2.2 + (TowerHeight / Length) / 2.2 * 100
+    }
     
     
     //All variables for the tension tab
