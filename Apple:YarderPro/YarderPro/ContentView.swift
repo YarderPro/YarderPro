@@ -87,7 +87,7 @@ struct DeflectionView: View{
                     .textFieldStyle(RoundedBorderTextFieldStyle())
             }
         }
-        .pickerStyle(.inline)
+        .pickerStyle(.wheel)
     }
 }
 
