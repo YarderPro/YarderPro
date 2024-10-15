@@ -24,6 +24,16 @@ export default function TabLayout() {
           ),
         }}
       />
+          
+      <Tabs.Screen
+        name="tensionCalc"
+        options={{
+          title: 'Tension',
+          tabBarIcon: ({}) => (
+            <Entypo name="calculator" size={26} color="black" />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="index"
         options={{
@@ -49,6 +59,9 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
+          href:null,
+
+
         }}
       />
     </Tabs>
