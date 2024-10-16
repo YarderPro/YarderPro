@@ -109,30 +109,6 @@ struct DeflectionView: View{
                     )
                 }
                 
-//                TextField("Mid Span", text: $midSpanInput, onEditingChanged: { isEditing in
-//                    if !isEditing {
-//                        // When editing ends, try to convert to Double and update the log
-//                        if let number = decimalFormatter.number(from: midSpanInput)?.doubleValue {
-//                            deflectionLog.spanMidSpan = number
-//                            deflectionLog.calculatePercentDeflection()
-//                        } else {
-//                            deflectionLog.spanMidSpan = nil // Handle invalid input
-//                        }
-//                    }
-//                })
-//                .textFieldStyle(CustomBorderedTextFieldStyle(isEditing: isEditingMidSpan))
-//                .keyboardType(.decimalPad)
-//                .font(.custom("Helvetica Neue", size: 19))
-//                .onChange(of: deflectionLog.spanMidSpan) {
-//                    midSpanInput = deflectionLog.spanMidSpan?.description ?? ""
-//                }
-//                .overlay(
-//                    Text("%")
-//                        .foregroundColor(.gray)
-//                        .padding(.trailing, 8),
-//                    alignment: .trailing
-//                )
-                
                 HStack{
                     Spacer()
                     Text("Tower Height")

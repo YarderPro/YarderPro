@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ModelDrawing: View{
-    let spanGround = 25
+    let spanGround = 35
     let spanMidSpan = 75
     let canvasWidth: CGFloat = 360
     let canvasHeight: CGFloat = 300
