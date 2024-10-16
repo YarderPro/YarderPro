@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = "Deflections"
+    @State private var selectedTab = "Details"
     @ObservedObject var deflectionLog: DeflectionLog
     
     var body: some View {
