@@ -26,81 +26,153 @@ struct ContentView: View {
     }
 }
 
+//This is to change the background of text feilds
+struct CustomBorderedTextFieldStyle: TextFieldStyle {
+    var isEditing: Bool
+
+    func _body(configuration: TextField<_Label>) -> some View {
+        configuration
+            .padding(7)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(isEditing ? Color.blue : Color.gray, lineWidth: 2)
+                    .background(Color.white)
+                    .cornerRadius(8)
+            )
+            .padding([.leading, .trailing], 2)
+    }
+}
 
 struct DeflectionView: View{
     @ObservedObject var deflectionLog: DeflectionLog
+    
+    @State private var isEditingGround: Bool = false
+    @State private var isEditingMidSpan: Bool = false
+    @State private var isEditingTowerHeight: Bool = false
+    @State private var isEditingLength: Bool = false
+    
+    private var decimalFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 4
+        formatter.minimumFractionDigits = 0
+        return formatter
+    }
+    
     var body: some View{
         Form{
             Section{
-                HStack{
+                HStack {
                     Spacer()
                     Text("Angle to Ground")
                         .font(.custom("Helvetica Neue", size: 19))
+                        .frame(width: 150, height: 20)
+
                     Spacer()
-                    TextField("Enter the angle to ground", value: $deflectionLog.spanGround, formatter: NumberFormatter())
-                        .border(.secondary)
-                        .border(Color.gray)
-                        .cornerRadius(3)
-                        .padding([.leading, .trailing], 2)
-                        .frame(minWidth:0, maxWidth:.infinity)
-                        .font(.custom("Helvetica Neue", size: 19))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .onChange(of: deflectionLog.spanGround) {
-                            deflectionLog.calculatePercentDeflection()
-                        }
+
+                    // Use a temporary String to hold the input
+
+                    TextField("Ground", value: ($deflectionLog.spanGround), formatter: decimalFormatter, onEditingChanged: { isEditing in isEditingGround = isEditing})
+                    .font(.custom("Helvetica Neue", size: 19))
+                    .textFieldStyle(CustomBorderedTextFieldStyle(isEditing: isEditingGround))
+                    .onChange(of: deflectionLog.spanGround) {
+                        deflectionLog.calculatePercentDeflection()
+                    }
+                    .overlay(
+                        Text("%")
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 8),
+                        alignment: .trailing
+                    )
                 }
+
                 
                 HStack{
-                    Text("Angle to Mid Span")
+                    Spacer()
+                    Text("Angle to Tailhold")
                         .font(.custom("Helvetica Neue", size: 19))
+                        .frame(width:150, height: 20)
                     
-                    TextField("Enter the angle to mid span", value: $deflectionLog.spanMidSpan, formatter: NumberFormatter())
-                        .border(.secondary)
-                        .border(Color.gray)
-                        .cornerRadius(3)
-                        .padding([.leading, .trailing], 2)
-                        .frame(minWidth:0, maxWidth:.infinity)
-                        .font(.custom("Helvetica Neue", size: 19))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .onChange(of: deflectionLog.spanMidSpan) {
-                            deflectionLog.calculatePercentDeflection()
-                        }
-                }
-                
-                HStack{
-                    Text("Height of Tower")
-                        .font(.custom("Helvetica Neue", size: 19))
+                    Spacer()
                     
-                    TextField("Enter the towerHeight", value: $deflectionLog.TowerHeight, formatter: NumberFormatter())
-                        .border(.secondary)
-                        .border(Color.gray)
-                        .cornerRadius(3)
-                        .padding([.leading, .trailing], 2)
-                        .frame(minWidth:0, maxWidth:.infinity)
+                    TextField("Mid Span", value: ($deflectionLog.spanMidSpan), formatter: decimalFormatter, onEditingChanged: { isEditing in isEditingMidSpan = isEditing})
+                    .font(.custom("Helvetica Neue", size: 19))
+                    .textFieldStyle(CustomBorderedTextFieldStyle(isEditing: isEditingMidSpan))
+                    .onChange(of: deflectionLog.spanMidSpan) {
+                        deflectionLog.calculatePercentDeflection()
+                    }
+                    .overlay(
+                        Text("%")
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 8),
+                        alignment: .trailing
+                    )
+                }
+                
+//                TextField("Mid Span", text: $midSpanInput, onEditingChanged: { isEditing in
+//                    if !isEditing {
+//                        // When editing ends, try to convert to Double and update the log
+//                        if let number = decimalFormatter.number(from: midSpanInput)?.doubleValue {
+//                            deflectionLog.spanMidSpan = number
+//                            deflectionLog.calculatePercentDeflection()
+//                        } else {
+//                            deflectionLog.spanMidSpan = nil // Handle invalid input
+//                        }
+//                    }
+//                })
+//                .textFieldStyle(CustomBorderedTextFieldStyle(isEditing: isEditingMidSpan))
+//                .keyboardType(.decimalPad)
+//                .font(.custom("Helvetica Neue", size: 19))
+//                .onChange(of: deflectionLog.spanMidSpan) {
+//                    midSpanInput = deflectionLog.spanMidSpan?.description ?? ""
+//                }
+//                .overlay(
+//                    Text("%")
+//                        .foregroundColor(.gray)
+//                        .padding(.trailing, 8),
+//                    alignment: .trailing
+//                )
+                
+                HStack{
+                    Spacer()
+                    Text("Tower Height")
                         .font(.custom("Helvetica Neue", size: 19))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .onChange(of: deflectionLog.TowerHeight) {
-                            deflectionLog.calculatePercentDeflection()
-                        }
+                        .frame(width:150, height: 20)
+                    
+                    Spacer()
+                    
+                    TextField("Tower Height", value: $deflectionLog.TowerHeight, formatter: decimalFormatter, onEditingChanged: { editing in
+                                isEditingTowerHeight = editing
+                            })
+                            .textFieldStyle(CustomBorderedTextFieldStyle(isEditing: isEditingTowerHeight))
+                            .keyboardType(.decimalPad)
+                            .font(.custom("Helvetica Neue", size: 19))
+                            .onChange(of: deflectionLog.TowerHeight) {
+                                deflectionLog.calculatePercentDeflection()
+                            }
                 }
                 
                 HStack{
+                    Spacer()
                     Text("Length of Cable")
                         .font(.custom("Helvetica Neue", size: 19))
+                        .frame(width:150, height: 20)
                     
-                    TextField("Enter the length of the cable", value: $deflectionLog.Length, formatter: NumberFormatter())
-                        .border(.secondary)
-                        .border(Color.gray)
-                        .cornerRadius(3)
-                        .padding([.leading, .trailing], 2)
-                        .frame(minWidth:0, maxWidth:.infinity)
-                        .font(.custom("Helvetica Neue", size: 19))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .onChange(of: deflectionLog.Length) {
-                            deflectionLog.calculatePercentDeflection()
-                        }
+                    Spacer()
+                    
+                    TextField("Length", value: $deflectionLog.Length, formatter: decimalFormatter, onEditingChanged: { editing in
+                                isEditingLength = editing
+                            })
+                            .textFieldStyle(CustomBorderedTextFieldStyle(isEditing: isEditingLength))
+                            .keyboardType(.decimalPad)
+                            .font(.custom("Helvetica Neue", size: 19))
+                            .onChange(of: deflectionLog.Length) {
+                                deflectionLog.calculatePercentDeflection()
+                            }
                 }
             }
+            
+            //Section for deflection
             Section{
                 HStack {
                         Text("Deflection")
