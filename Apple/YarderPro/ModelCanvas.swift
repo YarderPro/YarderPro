@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ModelDrawing: View{
     let spanGround = 25
-    let spanMidSpan = 45
+    let spanMidSpan = 75
     let canvasWidth: CGFloat = 360
     let canvasHeight: CGFloat = 300
     
@@ -17,11 +17,28 @@ struct ModelDrawing: View{
     let pointAX = 180
   //  let pointAY = (spanGround * 10^(-2)) *
     var body: some View{
+        let pointBX = Int(canvasWidth) - 3
+        let pointBY = canvasHeight - (Double(spanMidSpan) * 0.01 * Double(canvasHeight))
+        let pointB = CGPoint(x:pointBX, y: Int(pointBY))
+        let pointAX = Int(canvasWidth) / 2
+        let pointAY = canvasHeight - (Double(spanGround) * 0.01 * Double(canvasHeight))
+        let pointA = CGPoint(x:pointAX, y: Int(pointAY))
+        let pointO = CGPoint(x:10, y:Int(canvasHeight/2))
         Canvas{context, size in
-            context.draw(Image(systemName: "arrow.2.circlepath.circle"), at: CGPoint(x:10, y:150))
+            context.draw(Image(systemName: "arrow.2.circlepath.circle"), at: pointO)
            
             //Point B
-            context.draw(Image(systemName: "arrow.2.circlepath.circle"), at: CGPoint(x:(360 - 3), y: (spanMidSpan * 10^(-2)) * 300))
+            context.draw(Image(systemName: "arrow.2.circlepath.circle"), at: pointA)
+            
+            //Point A
+            context.draw(Image(systemName: "arrow.2.circlepath.circle"), at: pointB)
+            
+            var path = Path()
+            path.move(to: pointO)
+            path.addLine(to: pointA)
+            path.addLine(to: pointB)
+            context.stroke(path, with: .color(.black), lineWidth: 3)
+            
         }
         .frame(width:canvasWidth, height:canvasHeight)
         .border(Color.black)
